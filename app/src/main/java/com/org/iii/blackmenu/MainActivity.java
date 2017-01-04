@@ -147,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             ft.hide(mu);
         }
     }
-
     // EventBus
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Order event) {
