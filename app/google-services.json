@@ -1,0 +1,146 @@
+{
+  "project_info": {
+    "project_number": "1037567408314",
+    "firebase_url": "https://menumaneger.firebaseio.com",
+    "project_id": "menumaneger",
+    "storage_bucket": "menumaneger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037567408314:android:1d5c7399b771ecf5",
+        "android_client_info": {
+          "package_name": "com.example.user.android_pager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037567408314-h5me5ohojaibsf7cb980mi15o92fejaq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.android_pager",
+            "certificate_hash": "B41610AF94539D1259E0839573D61161240EE39B"
+          }
+        },
+        {
+          "client_id": "1037567408314-nhi9ml4klj1vk6qdsmi6svs3l26vud8u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.android_pager",
+            "certificate_hash": "FC7CA4B3D14B6A9603C9110049D68A22732F7A54"
+          }
+        },
+        {
+          "client_id": "1037567408314-v7qgud1meg08uf9mqedf9udqo1v87iso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo_1-HesDypMd1qr91WpTtupqyC-qDCoY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037567408314-v7qgud1meg08uf9mqedf9udqo1v87iso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037567408314:android:1e3f798aeeeb7630",
+        "android_client_info": {
+          "package_name": "com.example.biancaen.testfire"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037567408314-v7qgud1meg08uf9mqedf9udqo1v87iso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo_1-HesDypMd1qr91WpTtupqyC-qDCoY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037567408314:android:f6d5bc915f4d4b8b",
+        "android_client_info": {
+          "package_name": "com.org.iii.blackmenu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037567408314-gfiolrksa8itnoqed281mqmrmmf8r5ur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.org.iii.blackmenu",
+            "certificate_hash": "86D8C68F12A255F99F8BDDA7BC6C2A1BE54185F0"
+          }
+        },
+        {
+          "client_id": "1037567408314-q9phdv7e41gcto5fnpopf67tnha4bpja.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.org.iii.blackmenu",
+            "certificate_hash": "06CC65DB3FB38CE989CBF4B7F84067D0B84C9999"
+          }
+        },
+        {
+          "client_id": "1037567408314-v7qgud1meg08uf9mqedf9udqo1v87iso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCo_1-HesDypMd1qr91WpTtupqyC-qDCoY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037567408314-v7qgud1meg08uf9mqedf9udqo1v87iso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

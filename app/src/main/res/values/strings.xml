@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Blackmenu</string>
+    <string name="titleA">飯類</string>
+    <string name="titleB">麵類</string>
+    <string name="titleC">湯類</string>
+
+</resources>

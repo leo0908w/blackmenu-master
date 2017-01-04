@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/recent_item"
+        android:icon="@drawable/restaurantmenu"
+        android:title="菜單"
+        />
+    <item
+        android:id="@+id/location_item"
+        android:icon="@drawable/shoppingcart"
+        android:title="點餐明細"
+        />
+
+</menu>
