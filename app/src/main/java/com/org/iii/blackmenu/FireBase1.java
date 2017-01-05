@@ -57,10 +57,10 @@ public class FireBase1 {
 
     Map<String,Object> menuKey;
 
-    private String DBName;
-    private String DBPath;
-    private String DBPrice;
-    private String selectItem;
+    private HashMap DBName;
+    private HashMap DBNumber;
+    private String DBTotal;
+    private String seat;
 
     private long count;
     private boolean isupdate = false;
@@ -146,15 +146,16 @@ public class FireBase1 {
         });
     }
 
-    public void WriteFoodBase(String name , String path , String price , final String selectItem) {
+    public void WriteFoodBase(HashMap name , HashMap number , String total , final String seat) {
         this.DBName = name;
-        this.DBPath = path;
-        this.DBPrice = price;
-        this.selectItem = selectItem;
+        this.DBNumber = number;
+        this.DBTotal = total;
+        //座號 number
+        this.seat = seat;
 
 
 
-        myRefWrite = databaseWrite.getReference("foodinfo");
+        myRefWrite = databaseWrite.getReference("numberseat");
         child01 = new HashMap<>();
         child02 = new HashMap<>();
         isupdate = false;
@@ -166,23 +167,23 @@ public class FireBase1 {
             @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(!isupdate) {
-                        if (selectItem.equals("noodle")) {
-                            intkey = Integer.parseInt(keyNoodle.get(keyNoodle.size() - 1));
-                        }else if (selectItem.equals("rice")) {
-                            intkey = Integer.parseInt(keyRice.get(keyRice.size() - 1));
-                        }else if(selectItem.equals("soup")) {
-                            intkey = Integer.parseInt(keySoup.get(keySoup.size() - 1));
-                        }
+//                        if (number.equals("01")) {
+//                            intkey = Integer.parseInt(keyNoodle.get(keyNoodle.size() - 1));
+//                        }else if (number.equals("02")) {
+//                            intkey = Integer.parseInt(keyRice.get(keyRice.size() - 1));
+//                        }else if(number.equals("03")) {
+//                            intkey = Integer.parseInt(keySoup.get(keySoup.size() - 1));
+//                        }
 
                         //count = dataSnapshot.getChildrenCount();
                         child02.put("name", DBName);
-                        child02.put("path", DBPath);
-                        child02.put("price", DBPrice);
-                        child01.put(""+(intkey+1) , child02);
+                        child02.put("path", DBNumber);
+                        child02.put("price", DBTotal);
+                        child01.put(seat , child02);
 //                        Log.v("ppking" ,"key.size"+key.get(key.size()-1 ));
                         //myRefWrite.updateChildren(child01);
                         isupdate = true;
-                        myRefWrite.child(selectItem).updateChildren(child01);
+                        myRefWrite.updateChildren(child01);
 
                     }
                 }

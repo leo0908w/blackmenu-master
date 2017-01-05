@@ -25,6 +25,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.org.iii.blackmenu.R.id.toolbar;
@@ -45,6 +46,15 @@ public class menupager extends Fragment {
     private Activity mActivity;
     private DBHandler handler;
     private SQLiteDatabase db;
+    private FireBase1 fireBase1;
+    private int rTotal;
+    private String cname , cprice ;
+    private int cnumber;
+    private int count;
+
+    private HashMap nameMap =new HashMap();
+    private HashMap numberMap = new HashMap();
+
 
     @Override
     public void onAttach(Context context) {
@@ -55,6 +65,7 @@ public class menupager extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fireBase1 = new FireBase1();
 
     }
 
@@ -81,6 +92,27 @@ public class menupager extends Fragment {
         tvShopCartSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Cursor cursor = db.query("cart",null,null,null,null,null,null);
+                while (cursor.moveToNext()) {
+                    cprice = cursor.getString(cursor.getColumnIndex("price"));
+                    String cpath = cursor.getString(cursor.getColumnIndex("path"));
+                    cname = cursor.getString(cursor.getColumnIndex("name"));
+                    cnumber = cursor.getInt(cursor.getColumnIndex("number"));
+
+                    nameMap.put("name"+count , cname);
+                    numberMap.put("number"+count , cnumber);
+                    count++;
+
+                    int ctotal = Integer.parseInt(cprice)*cnumber;
+                    rTotal +=ctotal;
+
+
+                }
+                count = 0 ;
+
+                Log.v("will", "Total : " + nameMap);
+                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , "01");
+
                 db.execSQL("DROP TABLE IF EXISTS cart");
                 db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
             }
@@ -94,6 +126,7 @@ public class menupager extends Fragment {
         mShopCartAdapter.setOnDeleteClickListener(new ShopCartAdapter.OnDeleteClickListener() {
             @Override
             public void onDeleteClick(View view, int position,int cartid) {
+
                 mShopCartAdapter.notifyDataSetChanged();
             }
         });
