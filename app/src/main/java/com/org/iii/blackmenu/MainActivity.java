@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private int count;
     private DBHandler handler;
     private SQLiteDatabase db;
+    String re;
 
     public static final String POSITION = "position";
     public static final int FRAGMENT_ONE=0;
@@ -67,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
 //        showFragment(FRAGMENT_ONE);
         f1 = new F1();
 
+        Intent intent = getIntent();
+        re = intent.getStringExtra("ppking");
+//        Log.v("will", "re : "+re);
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
         bottomBar.setItemsFromMenu(R.menu.three_buttons_menu, new OnMenuTabSelectedListener() {
@@ -80,7 +84,12 @@ public class MainActivity extends AppCompatActivity {
                     ftn.commit();
                 } else if (menuItemId == R.id.location_item) {
 //                    showFragment(FRAGMENT_TWO);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putString("edttext", re);
+// set Fragmentclass Arguments
                     mu = new menupager();
+                    mu.setArguments(bundle);
                     ftn = fmr.beginTransaction().setCustomAnimations(R.anim.zoomin, R.anim.zoomout);
                     ftn.replace(R.id.container, mu);
 //                    ftn.addToBackStack(null);
@@ -116,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
         unreadMessages.setAutoShowAfterUnSelection(true);
 
 
+//
 
     }
 

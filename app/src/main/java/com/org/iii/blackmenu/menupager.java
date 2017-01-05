@@ -2,6 +2,7 @@ package com.org.iii.blackmenu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -48,10 +49,11 @@ public class menupager extends Fragment {
     private SQLiteDatabase db;
     private FireBase1 fireBase1;
     private int rTotal;
-    private String cname , cprice ;
+    private String cname , cprice ,re ;
     private int cnumber;
     private int count;
-
+    private MainActivity mainActivity;
+    private String strtext;
     private HashMap nameMap =new HashMap();
     private HashMap numberMap = new HashMap();
 
@@ -67,6 +69,7 @@ public class menupager extends Fragment {
         super.onCreate(savedInstanceState);
         fireBase1 = new FireBase1();
 
+
     }
 
     @Nullable
@@ -76,6 +79,11 @@ public class menupager extends Fragment {
 
         handler = new DBHandler(mActivity);
         db = handler.getWritableDatabase();
+
+        strtext = getArguments().getString("edttext");
+        Log.v("will", "get: "+strtext);
+
+
 
         tvShopCartTotalPrice = (TextView) view.findViewById(R.id.tv_shopcart_totalprice);
         tvShopCartTotalNum = (TextView) view.findViewById(R.id.tv_shopcart_totalnum);
@@ -87,6 +95,8 @@ public class menupager extends Fragment {
         RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
         llPay.setLayoutParams(lp);
+
+
 
         tvShopCartSubmit = (TextView) view.findViewById(R.id.tv_shopcart_submit);
         tvShopCartSubmit.setOnClickListener(new View.OnClickListener() {
@@ -105,13 +115,11 @@ public class menupager extends Fragment {
 
                     int ctotal = Integer.parseInt(cprice)*cnumber;
                     rTotal +=ctotal;
-
-
                 }
                 count = 0 ;
 
                 Log.v("will", "Total : " + nameMap);
-                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , "01");
+                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , strtext);
 
                 db.execSQL("DROP TABLE IF EXISTS cart");
                 db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");

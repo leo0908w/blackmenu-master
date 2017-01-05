@@ -25,6 +25,7 @@ public class QR_Code extends AppCompatActivity {
     private Camera camera;
     private int camId =1;
     private TextView textView;
+    private menupager mu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,26 +51,24 @@ public class QR_Code extends AppCompatActivity {
             public void onClick(SweetAlertDialog sweetAlertDialog) {
                 Log.v("will", "OK");
                 sweetAlertDialog.cancel();
-//                if (ContextCompat.checkSelfPermission(QR_Code.this,
-//                        Manifest.permission.CAMERA)
-//                        != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions(QR_Code.this,
-//                            new String[]{Manifest.permission.CAMERA,
-//                                    Manifest.permission.READ_EXTERNAL_STORAGE,
-//                                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-//                            },
-//                            123);
-//                } else {
-//                    init();
-//                }
-                init();
+                if (ContextCompat.checkSelfPermission(QR_Code.this,
+                        Manifest.permission.CAMERA)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(QR_Code.this,
+                            new String[]{Manifest.permission.CAMERA
+                            },
+                            123);
+                } else {
+                    init();
+                }
             }
         }).show();
     }
 
     public void init() {
         try {
-            camera = Camera.open(1);
+            camera = Camera.open(2);
+
 
         } catch (Exception e) {
             Log.v("ppking", "failed to open Camera");
@@ -94,6 +93,7 @@ public class QR_Code extends AppCompatActivity {
             releaseCameraAndPreview();
             Intent it = new Intent(QR_Code.this,MainActivity.class);
             it.putExtra("ppking" , re);
+
             startActivity(it);
         }
         // else continue with any other code you need in the method

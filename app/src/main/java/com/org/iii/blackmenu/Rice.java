@@ -102,7 +102,7 @@ public class Rice extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             riceAdapter.notifyDataSetChanged();
-            if (count>2){
+            if (count>3){
                 timer.purge();
                 timer.cancel();
                 timer=null;
