@@ -100,7 +100,7 @@ public class F1 extends Fragment {
         adapter.addFragment(rice, "飯類");
         adapter.addFragment(noodle, "麵類");
         adapter.addFragment(soup, "湯類");
-        Log.v("will", "F1-adapter:" + adapter);
+//        Log.v("will", "F1-adapter:" + adapter);
 //        Log.v("will", "F1-setupViewPager");
 //        adapter.notifyDataSetChanged();
         viewPager.setAdapter(adapter);
@@ -116,7 +116,7 @@ public class F1 extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            Log.v("will", "F1-getItem" + position);
+//            Log.v("will", "F1-getItem" + position);
             return mFragmentList.get(position);
         }
 
@@ -127,7 +127,7 @@ public class F1 extends Fragment {
 
         public void addFragment(Fragment fragment, String title) {
             mFragmentList.add(fragment);
-            Log.v("will", "F1-mFragmentList:" + mFragmentList);
+//            Log.v("will", "F1-mFragmentList:" + mFragmentList);
             mFragmentTitleList.add(title);
 //            Log.v("will", "F1-title:" + title);
         }

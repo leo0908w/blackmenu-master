@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private FireBase1 fireBase1;
     private BottomBar bottomBar;
     private menupager mu;
-
+    private int count;
     private DBHandler handler;
     private SQLiteDatabase db;
 
@@ -57,36 +57,57 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        EventBus.getDefault().register(this);
+         EventBus.getDefault().register(this);
 
         handler = new DBHandler(this);
-        db = handler.getReadableDatabase();
+        db = handler.getWritableDatabase();
 
         fmr =getSupportFragmentManager();
 
-        showFragment(FRAGMENT_ONE);
+//        showFragment(FRAGMENT_ONE);
+        f1 = new F1();
+
 
         bottomBar = BottomBar.attach(this, savedInstanceState);
         bottomBar.setItemsFromMenu(R.menu.three_buttons_menu, new OnMenuTabSelectedListener() {
             @Override
             public void onMenuItemSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.recent_item) {
-                    showFragment(FRAGMENT_ONE);
+                    ftn = fmr.beginTransaction();
+                    ftn.detach(mu);
+                    ftn.replace(R.id.container, f1);
+//                    ftn.addToBackStack(null);
+                    ftn.commit();
                 } else if (menuItemId == R.id.location_item) {
-                    showFragment(FRAGMENT_TWO);
+//                    showFragment(FRAGMENT_TWO);
+                    mu = new menupager();
+                    ftn = fmr.beginTransaction();
+                    ftn.replace(R.id.container, mu);
+//                    ftn.addToBackStack(null);
+                    ftn.commit();
                 }
             }
         });
 
+        ftn = fmr.beginTransaction();
+        ftn.add(R.id.container, f1);
+        ftn.commit();
+
         // Make a Badge for the first tab, with red background color and a value of "4".
-        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 5);
+        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 0);
 
         // Control the badge's visibility
         unreadMessages.show();
         //unreadMessages.hide();
 
         // Change the displayed count for this badge.
-        unreadMessages.setCount(2);
+//        Cursor cursor = db.query("cart",new String[]{"number"},null,null,null,null,null);
+//        while (cursor.moveToNext()) {
+//            int cnumber = cursor.getInt(cursor.getColumnIndex("number"));
+//            count += cnumber;
+//        }
+
+        unreadMessages.setCount(count);
 
         // Change the show / hide animation duration.
 //        unreadMessages.setAnimationDuration(9999999);
@@ -94,76 +115,28 @@ public class MainActivity extends AppCompatActivity {
         // If you want the badge be shown always after unselecting the tab that contains it.
         unreadMessages.setAutoShowAfterUnSelection(true);
 
-//        fireBase1 = new FireBase1();
-//        fireBase1.ReadFoodBase("foodinfo");
-//
+
 
     }
 
-    public void showFragment(int index){
-
-        ftn = fmr.beginTransaction().setCustomAnimations(
-                R.anim.zoomin, R.anim.zoomout);
-        hideFragment(ftn);
-
-        //注意这里设置位置
-        position = index;
-
-        switch (index) {
-
-            case FRAGMENT_ONE:
-                // 如果Fragment为空，就新建一个实例
-                // 如果不为空，就将它从栈中显示出来
-
-                if (f1 == null) {
-                    f1 = new F1();
-                    ftn.add(R.id.container, f1);
-                } else {
-                    ftn.show(f1);
-                }
-
-                break;
-            case FRAGMENT_TWO:
-
-                if (mu == null) {
-                    mu = new menupager();
-                    ftn.add(R.id.container, mu);
-                } else {
-                    ftn.show(mu);
-                }
-
-                break;
-        }
-
-        ftn.commit();
-    }
-
-    public void hideFragment(FragmentTransaction ft){
-        //如果不为空，就先隐藏起来
-        if (f1 != null){
-            ft.hide(f1);
-        }
-        if(mu != null) {
-            ft.hide(mu);
-        }
-    }
-    
+    private String cname = "";
+    private int cnumber;
     // EventBus
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onMessageEvent(Order event) {
-        Cursor cursor = db.query("cart",  new String[]{"name"}, "name = ?", new String[]{event.getProduct()}, null, null, null);
-        if (cursor.equals(event.getProduct())) {
+        Cursor cursor = db.query("cart", new String[]{"name, number"}, "name = ?", new String[]{event.getProduct()}, null, null, null);
+        while (cursor.moveToNext()) {
+            cname = cursor.getString(cursor.getColumnIndex("name"));
+            cnumber = cursor.getInt(cursor.getColumnIndex("number"));
+        }
+        if (cname.equals(event.getProduct())) {
             ContentValues data = new ContentValues();
-            data.put("cname", "Blue");
-            data.put("birthday", "1992-01-03");
-            data.put("tel", "0912");
-            db.update("cust", data, "id = ?", new String[] {"5"});
-//            ContentValues data = new ContentValues();
-//            data.put("name", event.getProduct());
-//            data.put("price", event.getPrice());
-//            data.put("path", event.getPathimg());
-//            data.put("number", event.getNumber());
-//            db.insert("cart", null, data);
+            data.put("name", event.getProduct());
+            data.put("price", event.getPrice());
+            data.put("path", event.getPathimg());
+            data.put("number", ++cnumber);
+            db.update("cart", data, "name = ?", new String[]{event.getProduct()});
+//                    Log.v("if", "if yes");
         } else {
             ContentValues data = new ContentValues();
             data.put("name", event.getProduct());
@@ -171,8 +144,10 @@ public class MainActivity extends AppCompatActivity {
             data.put("path", event.getPathimg());
             data.put("number", event.getNumber());
             db.insert("cart", null, data);
+//                    Log.v("else", "else no");
         }
-        Log.v("123", "db: " + event.getProduct());
+
+//        Log.v("123", "db: " + event.getProduct() + " cum: " + cnumber + " eventnuber: " + event.getNumber());
     }
 
     @Override
@@ -186,8 +161,9 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
 
-//        Intent it = new Intent(this , MyService.class);
-//        stopService(it);
+        Intent intent = new Intent(this, MyService.class);
+        stopService(intent);
+
     }
 
 

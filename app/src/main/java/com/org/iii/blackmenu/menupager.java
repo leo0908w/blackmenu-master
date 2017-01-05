@@ -2,6 +2,8 @@ package com.org.iii.blackmenu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -41,6 +43,8 @@ public class menupager extends Fragment {
     private float mTotalPrice1;
     private boolean mSelect;
     private Activity mActivity;
+    private DBHandler handler;
+    private SQLiteDatabase db;
 
     @Override
     public void onAttach(Context context) {
@@ -48,10 +52,20 @@ public class menupager extends Fragment {
         this.mActivity = (Activity) context;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.menupager, container, false);
+
+        handler = new DBHandler(mActivity);
+        db = handler.getWritableDatabase();
+
         tvShopCartTotalPrice = (TextView) view.findViewById(R.id.tv_shopcart_totalprice);
         tvShopCartTotalNum = (TextView) view.findViewById(R.id.tv_shopcart_totalnum);
 
@@ -64,10 +78,18 @@ public class menupager extends Fragment {
         llPay.setLayoutParams(lp);
 
         tvShopCartSubmit = (TextView) view.findViewById(R.id.tv_shopcart_submit);
+        tvShopCartSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                db.execSQL("DROP TABLE IF EXISTS cart");
+                db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
+            }
+        });
 
         rlvShopCart.setLayoutManager(new LinearLayoutManager(mActivity));
         mShopCartAdapter = new ShopCartAdapter(mActivity, mAllOrderList);
         rlvShopCart.setAdapter(mShopCartAdapter);
+//        mShopCartAdapter.notifyDataSetChanged();
         //删除商品接口
         mShopCartAdapter.setOnDeleteClickListener(new ShopCartAdapter.OnDeleteClickListener() {
             @Override
@@ -94,7 +116,7 @@ public class menupager extends Fragment {
                 mGoPayList.clear();
                 for(int i = 0;i < mAllOrderList.size(); i++)
                     if(mAllOrderList.get(i).getIsSelect()) {
-                        mTotalPrice += Integer.parseInt(mAllOrderList.get(i).getPrice()) * mAllOrderList.get(i).getCount();
+                        mTotalPrice += Float.parseFloat(mAllOrderList.get(i).getPrice()) * mAllOrderList.get(i).getCount();
                         mTotalNum += 1;
                         mGoPayList.add(mAllOrderList.get(i));
                     }
@@ -110,36 +132,46 @@ public class menupager extends Fragment {
     }
 
     private void initData(){
+        Cursor cursor = db.query("cart",null,null,null,null,null,null);
 
+        while (cursor.moveToNext()){
+            String cprice = cursor.getString(cursor.getColumnIndex("price"));
+            String cpath = cursor.getString(cursor.getColumnIndex("path"));
+            String cname = cursor.getString(cursor.getColumnIndex("name"));
+            int cnumber = cursor.getInt(cursor.getColumnIndex("number"));
 
-
-        for(int i = 0;i < 4;i ++){
             CartlistBean sb = new CartlistBean();
-            sb.setPrice("5000");
-            sb.setDefaultPic("http://b.blog.xuite.net/b/2/d/e/12584724/blog_32120/txt/375984958/0.jpg");
-            sb.setProductName("高級100A熟成牛排");
-            sb.setCount(1);
+            sb.setPrice(cprice);
+            sb.setDefaultPic(cpath);
+            sb.setProductName(cname);
+            sb.setCount(cnumber);
             mAllOrderList.add(sb);
         }
-
-        Log.v("will", "mu onCreate");
+//        Log.v("will", "mu onCreate");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.v("will", "mu onStart");
+//        Log.v("will", "mu onStart");
     }
 
-
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+//        Log.v("mu", " mu onDestroyView");
+
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+//        Log.v("mu", " mu onDestroy");
+
     }
 }

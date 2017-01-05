@@ -1,8 +1,12 @@
 package com.org.iii.blackmenu;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.roughike.bottombar.BottomBar;
@@ -11,50 +15,37 @@ import com.roughike.bottombar.BottomBarFragment;
 import com.roughike.bottombar.OnTabSelectedListener;
 
 public class Main3Activity extends AppCompatActivity {
-    private BottomBar bottomBar;
+    private Button button;
+    private DBHandler handler;
+    private SQLiteDatabase db;
+    public  TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main3);
 
-        bottomBar = BottomBar.attach(this, savedInstanceState);
+        handler = new DBHandler(this);
+        db = handler.getWritableDatabase();
 
-//                new BottomBarFragment(SampleFragment.newInstance("Content for recents."), R.drawable.restaurantmenu, "Recents"),
-//                new BottomBarFragment(SampleFragment.newInstance("Content for food."), R.drawable.shoppingcart, "Food"),
-//                new BottomBarFragment(SampleFragment.newInstance("Content for favorites."), R.drawable.restaurantmenu, "Favorites"),
-//                new BottomBarFragment(SampleFragment.newInstance("Content for locations."), R.drawable.shoppingcart, "Location")
+        textView = (TextView) findViewById(R.id.textView);
 
-        // Setting colors for different tabs when there's more than three of them.
-        bottomBar.mapColorForTab(0, "#3B494C");
-        bottomBar.mapColorForTab(1, "#00796B");
-        bottomBar.mapColorForTab(2, "#7B1FA2");
-        bottomBar.mapColorForTab(3, "#FF5252");
+    }
+    public void clear(View v) {
+        db.execSQL("DROP TABLE IF EXISTS cart");
+        db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
+    }
 
-        bottomBar.setOnItemSelectedListener(new OnTabSelectedListener() {
-            @Override
-            public void onItemSelected(int position) {
-                switch (position) {
-                    case 0:
-                        // Item 1 Selected
-                }
-            }
-        });
+    public void query(View v) {
+        textView.setText("");
+        Cursor cursor = db.query("cart",null,null,null,null,null,null);
 
-        // Make a Badge for the first tab, with red background color and a value of "4".
-        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 5);
-
-        // Control the badge's visibility
-        unreadMessages.show();
-        //unreadMessages.hide();
-
-        // Change the displayed count for this badge.
-        unreadMessages.setCount(2);
-
-        // Change the show / hide animation duration.
-//        unreadMessages.setAnimationDuration(9999999);
-
-        // If you want the badge be shown always after unselecting the tab that contains it.
-        unreadMessages.setAutoShowAfterUnSelection(true);
+        while (cursor.moveToNext()){
+            String cprice = cursor.getString(cursor.getColumnIndex("price"));
+            String cpath = cursor.getString(cursor.getColumnIndex("path"));
+            String cname = cursor.getString(cursor.getColumnIndex("name"));
+            int cnumber = cursor.getInt(cursor.getColumnIndex("number"));
+            textView.append(cname + " : "+cnumber +" : "+ cprice +" : "+ cpath+"\n");
+        }
     }
 }

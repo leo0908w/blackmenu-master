@@ -41,7 +41,6 @@ public class Rice extends Fragment {
     private int count;
     private Timer timer;
     private RiceAdapter riceAdapter;
-    private MyReceive myReceive;
 
     @Override
     public void onAttach(Context context) {
@@ -54,10 +53,6 @@ public class Rice extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fireBase1 = new FireBase1();
-        fireBase1.ReadFoodBase("foodinfo");
-
-
-
 
         startRead();
     }
@@ -73,12 +68,6 @@ public class Rice extends Fragment {
         mRecyclerView.setLayoutManager(new GridLayoutManager(myContext, 2));
         riceAdapter = new RiceAdapter(myContext, fireBase1.foodRice, fireBase1.pathRice ,fireBase1.priceRice);
         mRecyclerView.setAdapter(riceAdapter);
-
-        myReceive = new MyReceive();
-        IntentFilter intentFilter =new IntentFilter();
-        intentFilter.addAction("test");
-        myContext.registerReceiver(myReceive, intentFilter);
-
 
         return view;
     }
@@ -136,11 +125,4 @@ public class Rice extends Fragment {
         }
     }
 
-    private class MyReceive extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String test = intent.getStringExtra("123");
-            Log.v("ppking", test);
-        }
-    }
 }

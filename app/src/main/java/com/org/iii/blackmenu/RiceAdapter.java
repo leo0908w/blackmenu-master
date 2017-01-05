@@ -43,7 +43,7 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
         this.path = path;
         this.food = food;
         this.price = price;
-        Log.v("ppking", " comein");
+//        Log.v("ppking", " comein");
     }
 
 
@@ -124,19 +124,11 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
             String foodItem = food.get(itemPosition);
             String pathItem = path.get(itemPosition);
             String priceItem = price.get(itemPosition);
+            int numberItem = 1;
 
+            EventBus.getDefault().post(new Order(foodItem, priceItem, pathItem, numberItem));
 
-
-//            Intent it = new Intent(context , MyService.class);
-//            it.putExtra("food", foodItem);
-//            it.putExtra("path", pathItem);
-//            it.putExtra("price", priceItem);
-//            it.putExtra("number", 1);
-//            context.startService(it);
-
-            EventBus.getDefault().post(new Order(foodItem, pathItem, priceItem, 1));
-
-            Log.v("ppking" , "Item : " + foodItem +" : " + pathItem +"  :  "+ priceItem);
+//            Log.v("ppking" , "Item : " + foodItem +" : " + pathItem +"  :  "+ priceItem);
 
         }
     }

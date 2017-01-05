@@ -1,7 +1,10 @@
 package com.org.iii.blackmenu;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,7 +20,6 @@ import android.view.ViewGroup;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Noodle extends Fragment {
     private RecyclerView mRecyclerView;
     private Activity myContext;
@@ -26,7 +28,6 @@ public class Noodle extends Fragment {
     private int count;
     private Timer timer;
     private NoodleAdapter noodleAdapter;
-
 
     @Override
     public void onAttach(Context context) {
@@ -40,6 +41,10 @@ public class Noodle extends Fragment {
         super.onCreate(savedInstanceState);
         fireBase1 = new FireBase1();
         fireBase1.ReadFoodBase("foodinfo");
+
+
+
+
         startRead();
     }
 
@@ -52,16 +57,8 @@ public class Noodle extends Fragment {
 //        mRecyclerView.addItemDecoration(new MarginDecoration(this));
 //        mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new GridLayoutManager(myContext, 2));
-        noodleAdapter = new NoodleAdapter(this, fireBase1.foodNoodle, fireBase1.pathNoodle ,fireBase1.priceNoodle);
+        noodleAdapter = new NoodleAdapter(myContext, fireBase1.foodNoodle, fireBase1.pathNoodle ,fireBase1.priceNoodle);
         mRecyclerView.setAdapter(noodleAdapter);
-
-        Log.v("will", "Rice onCreateView");
-        noodleAdapter.setOnItemClickListener(new NoodleAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onItemClick(View view, String app) {
-                Log.v("will", "APP data: "  + app);
-            }
-        });
 
         return view;
     }
@@ -115,7 +112,8 @@ public class Noodle extends Fragment {
                 timer=null;
             }
             count++;
-            Log.v("will" , "timerTask" );
+
         }
     }
+
 }

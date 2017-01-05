@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final String DB_NAME = "mydata.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
 
     public DBHandler(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -19,7 +19,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE cart " +
-                "(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING)";
+                "(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price STRING,path STRING,number INTEGER)";
         db.execSQL(sql);
     }
 
