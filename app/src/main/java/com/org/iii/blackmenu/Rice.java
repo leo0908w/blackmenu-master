@@ -92,7 +92,6 @@ public class Rice extends Fragment {
                 myHandle.sendEmptyMessage(0);
             }
         }, 0, 1000);
-
     }
 
 

@@ -74,7 +74,7 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
             Glide.with(context)
                    .load(path.get(position))
                    .error(R.drawable.rice1)
-                   .placeholder(R.drawable.noodle1)
+                   .placeholder(R.drawable.loadingntv)
                    .centerCrop()
                    .into(imageView);
         holder.nameTextView.setText(food.get(position));
