@@ -1,6 +1,7 @@
 package com.org.iii.blackmenu;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -83,8 +84,6 @@ public class menupager extends Fragment {
         strtext = getArguments().getString("edttext");
         Log.v("will", "get: "+strtext);
 
-
-
         tvShopCartTotalPrice = (TextView) view.findViewById(R.id.tv_shopcart_totalprice);
         tvShopCartTotalNum = (TextView) view.findViewById(R.id.tv_shopcart_totalnum);
 
@@ -118,11 +117,15 @@ public class menupager extends Fragment {
                 }
                 count = 0 ;
 
-                Log.v("will", "Total : " + nameMap);
-                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , strtext);
+//                Log.v("will", "Total : " + nameMap);
+                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , "01");
 
                 db.execSQL("DROP TABLE IF EXISTS cart");
                 db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
+
+                Intent intent = new Intent(mActivity, FinalPage.class);
+                startActivity(intent);
+
             }
         });
 
@@ -133,15 +136,21 @@ public class menupager extends Fragment {
         //删除商品接口
         mShopCartAdapter.setOnDeleteClickListener(new ShopCartAdapter.OnDeleteClickListener() {
             @Override
-            public void onDeleteClick(View view, int position,int cartid) {
-
+            public void onDeleteClick(View view, int position,String pName) {
+                db.delete("cart","name = ?", new String[]{pName});
+//                Log.v("will", "pos: " + position + "id: " + pName);
                 mShopCartAdapter.notifyDataSetChanged();
             }
         });
         //修改数量接口
         mShopCartAdapter.setOnEditClickListener(new ShopCartAdapter.OnEditClickListener() {
             @Override
-            public void onEditClick(int position, int cartid, int count) {
+            public void onEditClick(int position, String pName, int count) {
+                ContentValues data = new ContentValues();
+                data.put("name", pName);
+                data.put("number", count);
+                db.update("cart", data, "name = ?", new String[]{pName});
+//                Log.v("will", "pos: " + position + "  count: " + count + " pName: " + pName);
                 mCount = count;
                 mPosition = position;
             }

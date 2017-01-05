@@ -2,6 +2,7 @@ package com.org.iii.blackmenu;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +58,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
                 if(data.get(position).getCount() > 1) {
                     int count = data.get(position).getCount() - 1;
                     if (mOnEditClickListener != null) {
-                        mOnEditClickListener.onEditClick(position, data.get(position).getId(), count);
+                        mOnEditClickListener.onEditClick(position, data.get(position).getProductName(), count);
                     }
                     data.get(position).setCount(count);
                     notifyDataSetChanged();
@@ -70,7 +71,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
             public void onClick(View v) {
                 int count = data.get(position).getCount() + 1;
                 if(mOnEditClickListener != null){
-                    mOnEditClickListener.onEditClick(position,data.get(position).getId(),count);
+                    mOnEditClickListener.onEditClick(position,data.get(position).getProductName(),count);
                 }
                 data.get(position).setCount(count);
                 notifyDataSetChanged();
@@ -82,7 +83,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
         holder.ivShopCartClothDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDialog(v,position);
+                showDialog(v, position);
             }
         });
 
@@ -91,7 +92,8 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
     private void showDialog(final View view, final int position){
             //调用删除某个规格商品的接口
             if(mOnDeleteClickListener != null){
-                mOnDeleteClickListener.onDeleteClick(view,position,data.get(position).getId());
+                mOnDeleteClickListener.onDeleteClick(view,position,data.get(position).getProductName());
+//                Log.v("will", "delete: "+data.get(position).getProductName());
             }
             data.remove(position);
             //重新排序，标记所有商品不同商铺第一个的商品位置
@@ -141,7 +143,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
     }
 
     public interface OnDeleteClickListener{
-        void onDeleteClick(View view, int position, int cartid);
+        void onDeleteClick(View view, int position, String pName);
     }
 
     public void setOnDeleteClickListener(OnDeleteClickListener mOnDeleteClickListener){
@@ -149,7 +151,7 @@ public class ShopCartAdapter extends RecyclerView.Adapter<ShopCartAdapter.MyView
     }
 
     public interface OnEditClickListener{
-        void onEditClick(int position, int cartid, int count);
+        void onEditClick(int position, String pName, int count);
     }
 
     public void setOnEditClickListener(OnEditClickListener mOnEditClickListener){

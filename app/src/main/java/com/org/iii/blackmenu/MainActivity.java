@@ -171,9 +171,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
 
-        Intent intent = new Intent(this, MyService.class);
-        stopService(intent);
-
     }
 
 

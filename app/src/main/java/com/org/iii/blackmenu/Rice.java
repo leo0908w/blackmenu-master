@@ -38,9 +38,6 @@ public class Rice extends Fragment {
         fireBase1 = new FireBase1();
         fireBase1.ReadFoodBase("foodinfo");
 
-
-
-
         startRead();
     }
 
