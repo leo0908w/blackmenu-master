@@ -177,7 +177,7 @@ public class FireBase1 {
 
                         //count = dataSnapshot.getChildrenCount();
                         child02.put("name", DBName);
-                        child02.put("path", DBNumber);
+                        child02.put("number", DBNumber);
                         child02.put("price", DBTotal);
                         child01.put(seat , child02);
 //                        Log.v("ppking" ,"key.size"+key.get(key.size()-1 ));

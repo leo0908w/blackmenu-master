@@ -3,5 +3,7 @@
     <string name="titleA">飯類</string>
     <string name="titleB">麵類</string>
     <string name="titleC">湯類</string>
+    <string name="facebook_app_id">359406281082083</string>
+    <string name="welcome">Welcome\nto\nQR-Shop</string>
 
 </resources>

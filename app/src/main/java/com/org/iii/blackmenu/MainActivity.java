@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onMenuItemSelected(@IdRes int menuItemId) {
                 if (menuItemId == R.id.recent_item) {
-                    ftn = fmr.beginTransaction();
+                    ftn = fmr.beginTransaction().setCustomAnimations(R.anim.zoomin, R.anim.zoomout);
                     ftn.detach(mu);
                     ftn.replace(R.id.container, f1);
 //                    ftn.addToBackStack(null);
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 } else if (menuItemId == R.id.location_item) {
 //                    showFragment(FRAGMENT_TWO);
                     mu = new menupager();
-                    ftn = fmr.beginTransaction();
+                    ftn = fmr.beginTransaction().setCustomAnimations(R.anim.zoomin, R.anim.zoomout);
                     ftn.replace(R.id.container, mu);
 //                    ftn.addToBackStack(null);
                     ftn.commit();
