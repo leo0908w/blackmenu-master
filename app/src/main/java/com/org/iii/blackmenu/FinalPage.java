@@ -7,8 +7,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class FinalPage extends AppCompatActivity {
     private ImageView gifImageView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,5 +22,14 @@ public class FinalPage extends AppCompatActivity {
         gifImageView = (ImageView) findViewById(R.id.GifImageView);
         GlideDrawableImageViewTarget imageViewTarget = new GlideDrawableImageViewTarget(gifImageView);
         Glide.with(this).load(R.drawable.groot2).into(imageViewTarget);
+
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 5000);
     }
+
 }

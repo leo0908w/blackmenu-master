@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -120,6 +121,8 @@ public class NoodleAdapter extends RecyclerView.Adapter<NoodleAdapter.ViewHolder
             String pathItem = path.get(itemPosition);
             String priceItem = price.get(itemPosition);
             int numberItem = 1;
+
+            Toast.makeText(context, "已將"+foodItem+"加到點餐明細中", Toast.LENGTH_SHORT).show();
 
             EventBus.getDefault().post(new Order(foodItem, priceItem, pathItem, numberItem));
 

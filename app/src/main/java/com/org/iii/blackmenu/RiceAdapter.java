@@ -11,8 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -27,9 +30,11 @@ import java.util.List;
 
 public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
     private Fragment fragment;
-    public ImageView imageView;
     private RecyclerView recyclerView;
     private Context context;
+//    private Animation mAnimation;
+//    private PopupWindow mPopupWindow;
+    public ImageView imageView;
 
     public final View.OnClickListener myOnClickListener = new MyOnClickListener();
 
@@ -45,6 +50,7 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
         this.price = price;
 //        Log.v("ppking", " comein");
     }
+
 
 
 //    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
@@ -66,8 +72,6 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
 //        view.setOnClickListener(this);
         return vh;
     }
-
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -102,8 +106,10 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         public TextView priceTextView;
         public TextView nameTextView;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -126,6 +132,9 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
             String priceItem = price.get(itemPosition);
             int numberItem = 1;
 
+
+
+            Toast.makeText(context, "已將"+foodItem+"加到點餐明細中", Toast.LENGTH_SHORT).show();
             EventBus.getDefault().post(new Order(foodItem, priceItem, pathItem, numberItem));
 
 //            Log.v("ppking" , "Item : " + foodItem +" : " + pathItem +"  :  "+ priceItem);

@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,10 +31,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 import static com.org.iii.blackmenu.R.id.toolbar;
 
 public class menupager extends Fragment {
-    private TextView tvShopCartSubmit,tvShopCartTotalNum;
+    private TextView tvShopCartTotalNum;
+    private Button tvShopCartSubmit;
     private View mEmtryView;
     private RecyclerView rlvShopCart;
     private ShopCartAdapter mShopCartAdapter;
@@ -53,11 +57,9 @@ public class menupager extends Fragment {
     private String cname , cprice ,re ;
     private int cnumber;
     private int count;
-    private MainActivity mainActivity;
     private String strtext;
     private HashMap nameMap =new HashMap();
     private HashMap numberMap = new HashMap();
-
 
     @Override
     public void onAttach(Context context) {
@@ -69,8 +71,6 @@ public class menupager extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fireBase1 = new FireBase1();
-
-
     }
 
     @Nullable
@@ -95,37 +95,60 @@ public class menupager extends Fragment {
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM,RelativeLayout.TRUE);
         llPay.setLayoutParams(lp);
 
-
-
-        tvShopCartSubmit = (TextView) view.findViewById(R.id.tv_shopcart_submit);
+        tvShopCartSubmit = (Button) view.findViewById(R.id.tv_shopcart_submit);
         tvShopCartSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Cursor cursor = db.query("cart",null,null,null,null,null,null);
-                while (cursor.moveToNext()) {
-                    cprice = cursor.getString(cursor.getColumnIndex("price"));
-                    String cpath = cursor.getString(cursor.getColumnIndex("path"));
-                    cname = cursor.getString(cursor.getColumnIndex("name"));
-                    cnumber = cursor.getInt(cursor.getColumnIndex("number"));
+                new SweetAlertDialog(mActivity, SweetAlertDialog.CUSTOM_IMAGE_TYPE)
+                        .setTitleText("確定要結帳?")
+                        .setCustomImage(R.drawable.cash)
+                        .setCancelText("繼續點餐")
+                        .setConfirmText("結帳")
+                        .showCancelButton(true)
+                        .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sDialog) {
+                                Log.v("will", "??");
+                                sDialog.cancel();
+                            }
+                        }).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        Log.v("will", "OK");
 
-                    nameMap.put("name"+count , cname);
-                    numberMap.put("number"+count , cnumber);
-                    count++;
+                        Cursor cursor = db.query("cart",null,null,null,null,null,null);
+                        while (cursor.moveToNext()) {
+                            cprice = cursor.getString(cursor.getColumnIndex("price"));
+                            String cpath = cursor.getString(cursor.getColumnIndex("path"));
+                            cname = cursor.getString(cursor.getColumnIndex("name"));
+                            cnumber = cursor.getInt(cursor.getColumnIndex("number"));
 
-                    int ctotal = Integer.parseInt(cprice)*cnumber;
-                    rTotal +=ctotal;
-                }
-                count = 0 ;
+                            nameMap.put("name"+count , cname);
+                            numberMap.put("number"+count , cnumber);
+                            count++;
+
+                            int ctotal = Integer.parseInt(cprice)*cnumber;
+                            rTotal +=ctotal;
+                        }
+                        count = 0 ;
+                        if (strtext != null) {
+                            fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , strtext);
+                        } else {
+                            fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , "01");
+                        }
+
 
 //                Log.v("will", "Total : " + nameMap);
-                fireBase1.WriteFoodBase(nameMap , numberMap,""+rTotal , "01");
 
-                db.execSQL("DROP TABLE IF EXISTS cart");
-                db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
+                        db.execSQL("DROP TABLE IF EXISTS cart");
+                        db.execSQL("CREATE TABLE cart(id INTEGER PRIMARY KEY AUTOINCREMENT,name STRING,price INTEGER,path STRING,number INTEGER)");
 
-                Intent intent = new Intent(mActivity, FinalPage.class);
-                startActivity(intent);
-
+                        Intent intent = new Intent(mActivity, FinalPage.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                        sweetAlertDialog.cancel();
+                    }
+                }).show();
             }
         });
 
@@ -215,13 +238,11 @@ public class menupager extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
 //        Log.v("mu", " mu onDestroyView");
-
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 //        Log.v("mu", " mu onDestroy");
-
     }
 }

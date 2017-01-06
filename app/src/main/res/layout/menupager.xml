@@ -37,8 +37,6 @@
             android:layout_above="@+id/emtryview"
             >
 
-
-
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -69,10 +67,10 @@
 
             </LinearLayout>
 
-            <TextView
+            <Button
                 android:id="@+id/tv_shopcart_submit"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:background="@drawable/login_btn"
                 android:text="結帳"
                 android:paddingLeft="30dp"

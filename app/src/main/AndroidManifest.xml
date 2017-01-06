@@ -16,17 +16,25 @@
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Main3Activity" />
-        <activity android:name=".QR_Code" />
-        <activity android:name=".Login_in" />
-        <activity android:name=".FinalPage" />
+
+        <activity android:name=".Main3Activity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".Login_in"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".QR_Code"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".FinalPage"
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".MyService"

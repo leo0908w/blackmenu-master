@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
@@ -128,6 +129,8 @@ public class SoupAdapter extends RecyclerView.Adapter<SoupAdapter.ViewHolder> {
 //            it.putExtra("price", priceItem);
 //            it.putExtra("number", 1);
 //            context.startService(it);
+
+            Toast.makeText(context, "已將"+foodItem+"加到點餐明細中", Toast.LENGTH_SHORT).show();
 
             EventBus.getDefault().post(new Order(foodItem, priceItem, pathItem, numberItem));
 

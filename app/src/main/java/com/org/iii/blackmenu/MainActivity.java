@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
@@ -34,6 +35,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class MainActivity extends AppCompatActivity {
     private F1 f1;
@@ -45,18 +48,30 @@ public class MainActivity extends AppCompatActivity {
     private int count;
     private DBHandler handler;
     private SQLiteDatabase db;
-    String re;
-
-    public static final String POSITION = "position";
-    public static final int FRAGMENT_ONE=0;
-    public static final int FRAGMENT_TWO=1;
-
-    private int position;
+    private String re;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final SweetAlertDialog pDialog = new SweetAlertDialog(MainActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.getProgressHelper().setBarColor(Color.parseColor("#A5DC86"));
+        pDialog.setTitleText("Loading");
+        pDialog.setCancelable(false);
+        pDialog.show();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(4000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                pDialog.dismiss();
+            }
+        }).start();
 
          EventBus.getDefault().register(this);
 
@@ -123,9 +138,6 @@ public class MainActivity extends AppCompatActivity {
 
         // If you want the badge be shown always after unselecting the tab that contains it.
         unreadMessages.setAutoShowAfterUnSelection(true);
-
-
-//
 
     }
 
