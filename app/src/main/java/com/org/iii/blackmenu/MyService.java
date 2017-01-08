@@ -5,7 +5,20 @@ import android.content.Intent;
 import android.os.IBinder;
 
 public class MyService extends Service {
+    private int count;
     public MyService() {
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override

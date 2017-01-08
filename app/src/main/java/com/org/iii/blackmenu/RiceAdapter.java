@@ -55,13 +55,7 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
 
 //    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
-//    public interface OnRecyclerViewItemClickListener {
-//        void onItemClick(View view, String app);
-//    }
 
-//    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
-//        this.mOnItemClickListener = listener;
-//    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -141,5 +135,13 @@ public class RiceAdapter extends RecyclerView.Adapter<RiceAdapter.ViewHolder> {
 
         }
     }
+
+    //    public interface OnRecyclerViewItemClickListener {
+//        void onItemClick(View view, String app);
+//    }
+
+//    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+//        this.mOnItemClickListener = listener;
+//    }
 
 }

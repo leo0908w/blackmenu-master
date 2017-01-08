@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.os.PersistableBundle;
 import android.support.annotation.IdRes;
@@ -49,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private DBHandler handler;
     private SQLiteDatabase db;
     private String re;
+    private BottomBarBadge unreadMessages;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,11 +122,11 @@ public class MainActivity extends AppCompatActivity {
         ftn.commit();
 
         // Make a Badge for the first tab, with red background color and a value of "4".
-        BottomBarBadge unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 0);
+        unreadMessages = bottomBar.makeBadgeForTabAt(1, "#E91E63", 0);
 
         // Control the badge's visibility
         unreadMessages.show();
-        //unreadMessages.hide();
+//        unreadMessages.hide();
 
         // Change the displayed count for this badge.
 //        Cursor cursor = db.query("cart",new String[]{"number"},null,null,null,null,null);
@@ -130,14 +134,28 @@ public class MainActivity extends AppCompatActivity {
 //            int cnumber = cursor.getInt(cursor.getColumnIndex("number"));
 //            count += cnumber;
 //        }
-
-        unreadMessages.setCount(count);
+////        count = 0;
+//        Log.v("will", "Count: " + count);
+//        unreadMessages.setCount(200);
 
         // Change the show / hide animation duration.
 //        unreadMessages.setAnimationDuration(9999999);
 
         // If you want the badge be shown always after unselecting the tab that contains it.
         unreadMessages.setAutoShowAfterUnSelection(true);
+        count = 0;
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 0:
+                            count++;
+                            unreadMessages.setCount(count);
+                        break;
+                }
+            }
+        };
 
     }
 
@@ -168,6 +186,14 @@ public class MainActivity extends AppCompatActivity {
             db.insert("cart", null, data);
 //                    Log.v("else", "else no");
         }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Message msg = new Message();
+                msg.what = 0;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
 
 //        Log.v("123", "db: " + event.getProduct() + " cum: " + cnumber + " eventnuber: " + event.getNumber());
     }
@@ -184,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
 
     }
+
 
 
 }

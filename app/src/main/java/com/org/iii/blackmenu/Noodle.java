@@ -106,7 +106,7 @@ public class Noodle extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             noodleAdapter.notifyDataSetChanged();
-            if (count>2){
+            if (count>5){
                 timer.purge();
                 timer.cancel();
                 timer=null;
